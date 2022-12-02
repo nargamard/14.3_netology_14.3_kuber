@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front
+  name: front
+  namespace: kuber-14-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+        - name: front
+          image: nginx:latest
+          imagePullPolicy: IfNotPresent
+          ports: 
+            - containerPort: 80
+              name: web
+              protocol: TCP
+          env:
+            - name: back-url
+              value: back
+            - name: back-port
+              value: "8080"
+            - name: SECUREtls.crt
+              valueFrom:
+                secretKeyRef:
+                  name: domain-cert
+                  key: tls.crt    
+          envFrom:
+            - configMapRef:
+                name: domain        
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+          volumeMounts:
+          - name: storage
+            mountPath: /mnt/storage 
+          - name: secvol
+            mountPath: "/etc/sec"
+          - name: nginx-config
+            mountPath: "/mnt/nginx-config"
+            subPath: nginx-config.yaml
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: storage-14-3
+      - name: secvol
+        secret:
+          secretName: domain-cert
+      - name: nginx-config
+        configMap:
+          name: nginx-config   
+
+
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front
+  namespace: kuber-14-3
+spec: 
+  ports:
+    - name: front
+      port: 80
+      nodePort: 32183
+      targetPort: 80
+  selector:
+    app: front
+  type: NodePort

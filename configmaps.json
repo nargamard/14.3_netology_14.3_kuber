@@ -1,0 +1,79 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "data": {
+                "name": "netology.ru"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "creationTimestamp": "2022-11-24T18:59:39Z",
+                "name": "domain",
+                "namespace": "kuber-13-2-prod",
+                "resourceVersion": "12038456",
+                "uid": "4242dd6b-a1d2-40f8-ace4-d03d3ac4990c"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "data": {
+                "ca.crt": "-----BEGIN CERTIFICATE-----\nMIIC/jCCAeagAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl\ncm5ldGVzMB4XDTIyMDkyOTE2MDkxNFoXDTMyMDkyNjE2MDkxNFowFTETMBEGA1UE\nAxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALt1\n1XPu94vyhyVfP0IyZPB5gsakiajxHmHdZdO5mqZtNwKa7GOfoEbeTpIyUorjGNGK\nsBC7hR6jKpxG+/EUKAVt1FSP9nuxcvtxmlPnCeGM1M4lA8Dd8uCknD/oQqK1ynUj\nLH9urQ57wcr/PPAyMuaqxQwcDthnVNrFWdLp+NAmgu7C+ADPwvEPYOm+o+Xx+O2w\nL1h0wkKSCklgdhbp5jupGsBGwKQ74MCpSajG6gwthjmW4UUO6tYxRmbdIQV4CkCz\nTkHRwEaKZMV9JeCq0H1xOLNQ8YZTeeblCU2pXoEuo5DWN+K2KsV5gGGED1MDTXTH\nTv3O9nQlh7l3F4C5Gh0CAwEAAaNZMFcwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB\n/wQFMAMBAf8wHQYDVR0OBBYEFPh3VLRgqACxH4JeL3RmuupzUyC2MBUGA1UdEQQO\nMAyCCmt1YmVybmV0ZXMwDQYJKoZIhvcNAQELBQADggEBAE8BFQFyD2zlSOSpbCeC\nCzxPHofYaVy9kfOBqcP60Ru/BX0tiYiI+6EHwvOfRrdcWX3hrpkaOqyZ81OvV61Z\nV1iyvIDSLAVCh26keISIKX10UCq/ZU7HHWMfSCdDFaa7NmsaVE3mZ4qKrff3uqe2\n5tZSioBGlJLmU4a6AFpnaOPMZnf3kjnyjj4eUpX/+cuoIx3ngUPrvfrgJQBKUivV\nbDh2ypACDKaQD3qT5B55k0jTBMYYGmnyK9dATGUl62tM+oxVULeSt8oO0Yty3Hro\nSoLkzgzCXp/3P178DLcQdUJe8K9NlIY+SSf5/CLOz4kXlcIJk2guuws6yl9mPaKN\nnEo=\n-----END CERTIFICATE-----\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/description": "Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters."
+                },
+                "creationTimestamp": "2022-10-18T19:01:13Z",
+                "name": "kube-root-ca.crt",
+                "namespace": "kuber-13-2-prod",
+                "resourceVersion": "3427508",
+                "uid": "b293f9a1-70db-48a0-8fbd-089af9f66f2e"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "data": {
+                "nginx.conf": "server {\n    listen 80;\n    server_name  netology.ru www.netology.ru;\n    access_log  /var/log/nginx/domains/netology.ru-access.log  main;\n    error_log   /var/log/nginx/domains/netology.ru-error.log info;\n    location / {\n        include proxy_params;\n        proxy_pass http://10.10.10.10:8080/;\n    }\n}"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "creationTimestamp": "2022-11-24T18:58:12Z",
+                "name": "nginx-config",
+                "namespace": "kuber-13-2-prod",
+                "resourceVersion": "12038230",
+                "uid": "38dd979f-83be-47ca-ab2a-d2573382471f"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "data": {
+                "alertmanager.yml": "global: {}\nreceivers:\n- name: default-receiver\nroute:\n  group_interval: 5m\n  group_wait: 10s\n  receiver: default-receiver\n  repeat_interval: 3h\ntemplates:\n- /etc/alertmanager/*.tmpl\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "annotations": {
+                    "meta.helm.sh/release-name": "prometheus",
+                    "meta.helm.sh/release-namespace": "kuber-13-2-prod"
+                },
+                "creationTimestamp": "2022-11-22T19:29:24Z",
+                "labels": {
+                    "app.kubernetes.io/instance": "prometheus",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "alertmanager",
+                    "app.kubernetes.io/version": "v0.24.0",
+                    "helm.sh/chart": "alertmanager-0.22.0"
+                },
+                "name": "prometheus-alertmanager",
+                "namespace": "kuber-13-2-prod",
+                "resourceVersion": "11596628",
+                "uid": "8a5d0156-7d69-43bc-9ba0-f4dd90cf1fd5"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
